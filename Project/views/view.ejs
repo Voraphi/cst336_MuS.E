@@ -1,0 +1,33 @@
+<%- include ('templates/header'); -%>
+
+<div class='container'>
+	<div class='jumbotron'>
+		<h3> FILEUPLOAD DEMO </h3>
+		<a class='btn btn-primary' href='/'>Home</a>
+	</div>
+	
+	<div>
+		<audio controls>
+	        <audio src='data:audio/mp3;base64, <%=data%>'/>
+	        <audio src='data:audio/ogg;base64, <%=data%>'/>
+	        <audio src='data:audio/wav;base64, <%=data%>'/>
+	        <audio src='/home/ec2-user/environment/FileUpload/Project/public/file/tets_audio.mp3'/>
+		</audio>
+		<!--<script>-->
+		<!--	console.log();-->
+		<!--</script>-->
+        
+<!--    <audio id="Test_Audio" controls> -->
+  
+<!--        <source src= -->
+<!--"https://media.geeksforgeeks.org/wp-content/uploads/20190531165842/Recording1514.ogg"-->
+<!--                type="audio/ogg"> -->
+  
+<!--        <source src= -->
+<!--"https://media.geeksforgeeks.org/wp-content/uploads/20190531165842/Recording1514.mp3"-->
+<!--                type="audio/mpeg"> -->
+<!--    </audio> -->
+    </div>
+</div>
+
+<%- include ('templates/footer'); -%>

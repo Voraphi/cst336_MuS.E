@@ -1,0 +1,150 @@
+<%- include ('templates/header'); -%>
+
+
+	<%- include ('templates/loggedInNav'); -%>
+	<div class="background-astro">
+		<div class='container'>
+
+
+			<div class="jumbotron ">
+				<h3> Find Song From File </h3>
+				<!--<a class='btn btn-primary' href='/'>Home</a>-->
+			</div>
+
+			<form class="elegant-darkback" action='/upload' method='POST' enctype='multipart/form-data'>
+				<div class='form-group row'>
+				<div class='col-sm-4'></div>
+				<div class='col-sm-4'>
+					<p style="color:white;font-size:1em;"> Song File Less Than 25 Seconds. </p>
+				</div>
+				</div>
+				<div class='form-group row'>
+					<label for='filename' class='col-sm-4 col-form-label'>Select <strong>Audio</strong> File</label>
+					<div class='col-sm-4'>
+						<input type='file' class='form-control' id='filename' name='filename' accept='audio/*' required>
+					</div>
+					
+				</div>
+				<div class='form-group row'>
+					<div class='col-sm-4'></div>
+					<div class='col-sm-4'>
+						<button class='cool btn btn-primary btn-block'>Submit</button>
+							<% if(apiError != undefined && apiError) { %>
+						        <p style="color:red;font-size:0.6em;"> Something Went Wrong... <br> try something else. </p>
+						    <% } %>
+					</div>
+					<div class='col-sm-4'></div>
+				</div>
+			</form>
+
+			<script>
+				$(function() {
+					$('[data-toggle="popover"]').popover()
+				});
+			</script>
+
+
+<div  class="elegant-darkback jumbotron monospace">
+			<% if (songs.length == 0) { %>
+				<h3 style='color: green;'> Empty Playlist Try adding some. </h3>
+				<% }  else { %>
+
+					<% songs.forEach(function(song) { %>
+						<h4 style="display:inline-block;">
+							<%= song.title %>
+						</h4>
+						<p style="display:inline-block;"> by </p>
+						<h4 style="display:inline-block;">
+							<%= song.artist %>
+						</h4>
+						<% if (song.spotify == "No link sry") { %>
+							<img src="/img/Spotify.svg" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Sorry No Spotify Link." width="40" height="40">
+							<% } else { %>
+								<a href="<%= song.spotify %>">
+			<img alt="spotify-link" src="/img/Spotify.svg" width="40" height="40">
+			</a>
+								<% } %>
+									<% if (song.apple_music == "No link sry") { %>
+										<img src="/img/Apple.svg" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Sorry No Apple Music Link." width="40" height="40">
+										<% } else { %>
+											<a href="<%= song.apple_music %>">
+			<img alt="apple_music-link" src="/img/Apple.svg" width="40" height="40">
+			</a>
+											<% } %>
+												<% if (song.deezer == "No link sry") { %>
+													<img src="img/Deezer.svg" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Sorry No Deezer Link." width="40" height="40">
+													<% } else { %>
+														<a href="<%= song.deezer %>">
+			<img alt="deezer-link" src="/img/Deezer.svg" width="40" height="40">
+			</a>
+														<% } %>
+															<button type="button" class="btn btn-warning" data-toggle="modal" data-target='#modal<%= song.songId %>'>Edit Song</button>
+															<div class="modal fade" id='modal<%= song.songId %>' class="modal" tabindex="-1" role="dialog" aria-labelledby='#modalLabel<%= song.songId %>' aria-hidden="true">
+																<div class="modal-dialog" role="document">
+																	<div class="modal-content">
+																		<div class="modal-header">
+																			<h5 class="modal-title" id='#modalLabel<%= song.songId %>'>
+																				<%= song.title %>
+																			</h5>
+																			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									                      <span aria-hidden="true">&times;</span>
+									                    </button>
+																		</div>
+																		<div class="modal-body">
+																			<form action="/updateSong" method="POST">
+																				<input type="hidden" name="songId" value="<%= song.songId %>">
+																				<input class="roundedBorderInput" type="text" placeholder="Song's Nickname..." name="title" value='<%= song.title %>' required>
+																				<br>
+																				<input class="roundedBorderInput" type="text" placeholder="Artist's Nickname..." name="artist" value='<%= song.artist %>' required>
+																		</div>
+																		<div class="modal-footer">
+																			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+																			<button type="submit" class="btn btn-primary">Save changes</button>
+																			</form>
+
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<button type="button" class="btn btn-danger" data-toggle="modal" data-target='#del<%= song.songId %>'>Delete Song</button>
+															<div class="modal fade" id='del<%= song.songId %>' class="modal" tabindex="-1" role="dialog" aria-labelledby='#delLabel<%= song.songId %>' aria-hidden="true">
+																<div class="modal-dialog" role="document">
+																	<div class="modal-content">
+																		<div class="modal-header">
+																			<h5 class="modal-title" id='#delLabel<%= song.songId %>'>
+																				<h3 style="color:red">Are You Sure You Want To Delete</h3>
+																			</h5>
+																			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									                      <span aria-hidden="true">&times;</span>
+									                    </button>
+																		</div>
+																		<div class="modal-body">
+																			<form action="/deleteSong" method="POST">
+																				<h4 style="display:inline-block;">
+																					<%= song.title %>
+																				</h4>
+																				<p style="display:inline-block;"> by </p>
+																				<h4 style="display:inline-block;">
+																					<%= song.artist %>
+																				</h4>
+																				<input type="hidden" name="songId" value="<%= song.songId %>">
+																		</div>
+																		<div class="modal-footer">
+																			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+																			<button type="submit" class="btn btn-danger">Delete</button>
+																			</form>
+
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<!--<marquee>jesus sux at minecraft</marquee>-->
+															<br>
+															<% }) %>
+																<% } %>
+																</div>
+
+		</div>
+		</div>
+
+		<%- include ('templates/footer'); -%>

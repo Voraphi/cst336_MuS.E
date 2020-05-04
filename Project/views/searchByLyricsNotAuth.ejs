@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MuS.E</title>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+		<!--<script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>-->
+		<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+    <!--<script src="https://unpkg.com/@popperjs/core@2"></script>-->
+		<link rel='stylesheet' type='text/css' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'>
+		<link rel='stylesheet' type='text/css' href='css/app.css'>
+  </head>
+  <body class="background-general">
+      
+<%- include ('templates/notLoggedInNav'); -%>
+<div class='container'>
+        <div class="jumbotron monospace">
+            <h1 style="display:inline-block;" class="serif bold white-text">Search By Lyrics </h1>
+                <form style="display:inline-block;float:right;" action="/">
+                    <button style="display:inline-block;" class="btn-white btn  my-2 my-sm-0m" type="submit"> Search Lyrics </button>
+                </form>
+
+            <!-- Add action-->
+
+            <form class="elegant-darkback" action='/song-search' method="POST">
+                <div class="form-group row">
+                    <label for="song" class="col-sm-4 col-form-label">Song Lyrics</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="lyrics" name="lyrics" required="">
+                    </div>
+                    <div id="title-empty" class="col-sm-2"></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-4">
+                        <button id="search-lyrics" class="cool btn btn-primary btn-block">Search</button>
+                    </div>
+                    <% if(apiError != undefined && apiError) { %>
+							<p style="color:red;font-size:0.6em;"> Something Went Wrong... <br> try something else. </p>				
+					<% } %>
+                </div>
+            </form>
+
+            <div id="lyrics"></div>
+
+
+        </div>
+    </div>
+
+    <!--<script type="text/javascript" src="/FileUpload/Project/views/lyrics.js"></script>-->
+
+<%- include ('templates/footer'); -%>
